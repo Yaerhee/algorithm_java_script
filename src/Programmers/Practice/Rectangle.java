@@ -1,26 +1,36 @@
 package Programmers.Practice;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Rectangle extends IOException {
     public static void main(String[] args) {
 
-        int[][] array = {{7,2}, {2,3}, {3, 4}};
+        int[][] array = {{1, 4}, {3, 4}, {3, 10}};
         int[] answer = {};
-        int[] manyX = new int[array.length], manyY = new int[array.length];
+        Integer[] manyX = new Integer[array.length], manyY = new Integer[array.length];
 
         for (int i = 0; i < array.length; i++) {
-            manyX[i] = array[i][0];
-            manyY[i] = array[i][1];
+            for (int j = 0; j < array[i].length; j++) {
+                if (j == 0) {
+                    manyX[i] = array[i][j];
+                } else {
+                    manyY[i] = array[i][j];
+                }
+            }
         }
 
-        int uniqueX = (int) Arrays.stream(manyX).flatMap(IntStream::of).distinct().count();
-        int uniqueY = (int) Arrays.stream(manyY).flatMap(IntStream::of).distinct().count();
+        Set<Integer> uniqueXSet = Arrays.stream(manyX).filter(i -> Collections.frequency(List.of(manyX), i) == 1)
+                .collect(Collectors.toSet());
+        Set<Integer> uniqueYSet = Arrays.stream(manyY).filter(i -> Collections.frequency(List.of(manyY), i) == 1)
+                .collect(Collectors.toSet());
+
+        int uniqueX = uniqueXSet.stream().mapToInt(Integer::intValue).toArray()[0];
+        int uniqueY = uniqueYSet.stream().mapToInt(Integer::intValue).toArray()[0];
+
 
         answer = new int[]{uniqueX, uniqueY};
 
